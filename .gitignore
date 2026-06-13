@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.wav
+models/
+.env
+logs/
+output.wav
+output.json
+config/config.json
+package-lock.json

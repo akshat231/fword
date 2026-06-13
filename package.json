@@ -1,0 +1,40 @@
+{
+  "name": "findword",
+  "version": "1.0.0",
+  "description": "Transcribe media files using whisper.cpp and search for words/phrases in transcripts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "fword": "ts-node src/cli.ts"
+  },
+  "bin": {
+    "fword": "./bin/fword.sh"
+  },
+  "keywords": [
+    "whisper",
+    "transcription",
+    "speech-to-text",
+    "audio",
+    "ffmpeg"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "winston": "^3.19.0"
+  }
+}

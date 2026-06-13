@@ -1,0 +1,4 @@
+{
+  "whisperCliPath": "/path/to/whisper-cli",
+  "modelPath": "/path/to/ggml-model.bin"
+}

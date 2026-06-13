@@ -7,7 +7,7 @@ Transcribe media files using [whisper.cpp](https://github.com/ggerganov/whisper.
 - **Node.js >= 18**
 - **[whisper.cpp](https://github.com/ggerganov/whisper.cpp)** — build the `whisper-cli` binary and download a model
 - **ffmpeg** (for local media files)
-- **yt-dlp** (for YouTube URLs)
+- **yt-dlp** (for URLs from YouTube, Vimeo, Twitter/X, Instagram, TikTok, and [hundreds of other sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) supported by yt-dlp)
 
 ## Setup
 
@@ -32,7 +32,7 @@ Search for a word in a media file:
 fword find /path/to/media.mp4 "hello"
 ```
 
-Search for a word in a YouTube video:
+Search for a word in a video from any yt-dlp-supported URL:
 
 ```bash
 fword find https://youtube.com/watch?v=... "hello"

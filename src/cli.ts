@@ -23,7 +23,7 @@ const config = async () => {
       whisperCliPath,
       modelPath
     }
-    indexFile.setConfig(config);
+    await indexFile.setConfig(config);
     return;
   } catch (error) {
     throw error;

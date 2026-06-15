@@ -3,6 +3,7 @@ import { access } from "fs/promises";
 import path from "path";
 import { modelConfig, segment } from "./types";
 import fs from "fs/promises";
+import os from "os";
 
 const getConfig = async (): Promise<modelConfig> => {
   try {
@@ -32,9 +33,10 @@ const fileExist = async (inputPath: string): Promise<boolean> => {
   }
 };
 
-const convertToWav = (inputPath: string, isItUrl: boolean): string => {
+const convertToWav = async (inputPath: string, isItUrl: boolean): Promise<string> => {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const outputPath = path.join(os.tmpdir(), `output-${timestamp}.wav`);
   try {
-    const outputPath = path.join(process.cwd(), "output.wav");
     if (isItUrl) {
       const args = ["--extract-audio", "--audio-format", "wav", "--audio-quality", "0", "-o", outputPath, inputPath];
       execFileSync("yt-dlp", args);
@@ -44,6 +46,7 @@ const convertToWav = (inputPath: string, isItUrl: boolean): string => {
     }
     return outputPath;
   } catch (error) {
+    await fs.unlink(outputPath)
     throw error;
   }
 };
@@ -52,16 +55,18 @@ const transcribeWithTimestamp = async (
   inputPath: string,
   word: string,
 ): Promise<segment[]> => {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const outputPath = path.join(os.tmpdir(), `output-${timestamp}`);
   try {
     const matches: segment[] = [];
     //get config
     const config = await getConfig();
     const whisperCliPath = config.whisperCliPath;
     const modelPath = config.modelPath;
-    const outputPath = path.join(process.cwd(), "output");
     // do actual transcribing
     const args = ["-m", modelPath, "-f", inputPath, "-oj", "-of", outputPath];
     execFileSync(whisperCliPath, args);
+    await fs.unlink(inputPath)
     const rawFile = outputPath + ".json";
     const raw = await fs.readFile(rawFile, "utf-8");
     const data = JSON.parse(raw);
@@ -71,8 +76,11 @@ const transcribeWithTimestamp = async (
         matches.push(seg);
       }
     }
+    await fs.unlink(`${outputPath}.json`)
     return matches;
   } catch (error) {
+    await fs.unlink(inputPath)
+    await fs.unlink(`${outputPath}.json`)
     throw error;
   }
 };

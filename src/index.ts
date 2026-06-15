@@ -18,7 +18,7 @@ const findWord = async (
       await fileExist(inputPath);
     }
     //convert it to .wav
-    const outputPath = convertToWav(inputPath, isItUrl);
+    const outputPath = await convertToWav(inputPath, isItUrl);
     //start transcribing and keep on inserting word timestamp
     const segments: segment[] = await transcribeWithTimestamp(outputPath, word);
     //return
